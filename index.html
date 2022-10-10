@@ -16,30 +16,36 @@
 
         <form>
             <label for="nomeCompleto">Nome Completo</label>
-            <input name="nomeCompleto" type="text">
+            <input name="nomeCompleto" type="text" v-model="form.nome">
 
             <label for="email">E-mail</label>
-            <input name="email" type="text">
+            <input name="email" type="text" v-model="form.email">
 
             <label for="nota">Nota</label>
-            <input name="nota" type="text">
+            <input name="nota" type="text" v-model="form.nota">
 
-            <input type="button" value="Enviar">
+            <input class="botao" type="button" value="Enviar" @click="adicionarAluno">
 
         </form>
 
+
+
         <div>
-            <table>
+            <table class="table">
                 <thead>
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Nota</th>
+                    <th>Ações</th>
                 </thead>
                 <tbody>
                     <tr v-for="aluno in alunos">
                         <td>{{aluno.nome}}</td>
                         <td>{{aluno.email}}</td></td>
                         <td>{{aluno.nota}}</td>
+                        <td>
+                            <button class="danger" @click="apagarAluno(aluno)">Apagar</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -50,13 +56,71 @@
         var app = new Vue({
             el: "#app",
             data:{
-                alunos:[
-                    {nome: 'Amanda Lima', email: 'amandalimasiva@gmail.com', nota: 10.00},
-                    {nome: 'Jonas Lima', email: 'joaolima@gmail.com', nota: 10.00},
-                    {nome: 'Ana Lima', email: 'aninhalima@gmail.com', nota: 10.00}
-                ]
+                form:{
+                    nome: '',
+                    email: '',
+                    nota: ''
+                },
+                alunos:[]
+                    //Array de Alunos
+                    //nome: 'Amanda Lima', email: 'amandalimasiva@gmail.com', nota: 10.00,
+                    //nome: 'Jonas Lima', email: 'joaolima@gmail.com', nota: 10.00,
+                    //nome: 'Ana Lima', email: 'aninhalima@gmail.com', nota: 10.00
+            }, 
+            methods:{
+                limpaFormulario: function(){
+                    this.form = {
+                        nome: '',
+                        email: '',
+                        nota:''
+                    }
+                },
+                adicionarAluno: function(){
+                    //.log(this.form)
+                    this.alunos.push(this.form)
+                    this.limpaFormulario()
+                },
+                apagarAluno: function(aluno){
+                    var posicao = this.alunos.indexOf(aluno)
+                    this.alunos.splice(posicao,1)
+                }
             }
         })
     </script>
+
+    <style>
+        .table{
+            margin-top: 20px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .table , .table td{
+            border-top: 1px solid #ccc;
+        }
+
+        .table th:last-child, td:last-child{
+            text-align: right;
+        }
+
+        .danger{
+            background-color: #E91E63;
+            border-color: #E91E63;
+            color: #ccc;
+        }
+
+        input{
+            display: block;
+        }
+
+        .botao{
+            margin-top: 10px;
+            border-color: #ff8a80;
+            background-color: #ff8a80;
+            color: #fff;
+            border-radius: 10px;
+        }
+
+    </style>
 </body>
 </html>
